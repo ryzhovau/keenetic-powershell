@@ -3,7 +3,7 @@ This module allows to operate with [Keenetic routers](https://keenetic.com) rout
 
 # Installation
 ```
-Import-Module "path\to\keenetic.psd1
+Import-Module "path\to\Keenetic.psd1"
 ```
 
 # Usage
