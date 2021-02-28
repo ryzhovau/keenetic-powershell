@@ -5,15 +5,11 @@
     Process auth challenge on given device and output result for use in future.
     Please note about session expiration after few minutes of inactivity.
 .EXAMPLE
-    PS C:\> New-KNSession -Target https://my.keenetic.com -Credential (Get-Credential) -AsDefaultSession
-    Log onto Keenetic Router on given URL using given credentials and save session parameters in memory for further use.
+    PS C:\> Get-Credential | New-KNSession -Target https://my.keenetic.com -AsDefaultSession
+    Log onto Keenetic Router on given URL and credentials and save session parameters in memory for further use.
 .EXAMPLE
-    PS C:\> New-KNSession -Credential (Get-Credential)
+    PS C:\>$Session = New-KNSession -Credential (Get-Credential)
     Log onto Keenetic Router on default address 'http://my.keenetic.net' and return session parameters as an object.
-.INPUTS
-    Inputs (if any)
-.OUTPUTS
-    Session parameters, including System.Net.CookieContainer to further web requests.
 .NOTES
     General notes
 .LINK
@@ -22,8 +18,12 @@
 function New-KNSession {
     [CmdletBinding()]
     param(
+        # URL to connect, like 'http://192.168.0.1' or 'https://my.keenetic.pro'. Presumes 'http://my.keenetic.net' if omitted.
         [System.Uri]$Target='http://my.keenetic.net',
+        # User name and password for target device
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
         [pscredential]$Credential,
+        # Store session parameters to $DefaultKNSession instead of returning object
         [Switch]$AsDefaultSession
     )
     Begin {
