@@ -11,7 +11,8 @@ function Invoke-GenericKNRequest {
          # API endpoint, i.e. 'rci/show/version'
         [Parameter(Mandatory=$true)]
         [string]$Endpoint,
-        # Session object. Use $DefaultKNSession if omitted. 
+        # Session object
+        [Parameter(Mandatory=$true)] 
         [KNSession]$Session,
         # POST request body. GET request will be performed if omitted
         [string]$PostBody
@@ -19,10 +20,7 @@ function Invoke-GenericKNRequest {
     Begin {
     }
     Process {
-        if ($null -eq $Session) {
-            $Session=$Global:DefaultKNSession
-        }
-        if ($null -eq $Session) {
+         if ($null -eq $Session) {
             throw [System.Exception] 'Neither -Session nor $DefaultKNSession provided.'
         }
         Write-Verbose "Performing REST API request to $($Session.Target)$($Endpoint)"

@@ -1,15 +1,14 @@
 <#
 .SYNOPSIS
-    Authentificate on Keenetic device and save session parameters.
+    List Keenetic users.
 .DESCRIPTION
-    Process auth challenge on given device and output result for use in future.
-    Please note about session expiration after few minutes of inactivity.
+    Returns list of users with tags and NT/MD5-hashed passwords
 .EXAMPLE
-    PS C:\> Get-Credential | New-KNSession -Target https://my.keenetic.com -AsDefaultSession
-    Log onto Keenetic Router on given URL and credentials and save session parameters in memory for further use.
+    PS C:\> Get-KNUsers -Session $Keenetic_Giga
+    Show device users form $Keenetic_Giga session
 .EXAMPLE
-    PS C:\>$Session = New-KNSession -Credential (Get-Credential)
-    Log onto Keenetic Router on default address 'http://my.keenetic.net' and return session parameters as an object.
+    PS C:\> Get-KNUsers
+    Retrive device users from default session. Command let will raise an exception if default session is not defined.
 .NOTES
     General notes
 .LINK
@@ -18,12 +17,18 @@
 function Get-KNUsers {
     [CmdletBinding()]
     param(
-        # Existing connection session
+        # Existing connection session. Use default one if omitted
         [Parameter(ValueFromPipeline=$true)]
-        [KNSession]$Session
+        [KNSession]$Session=$Global:DefaultKNSession
     )
     Begin {
-        (Invoke-GenericKNRequest -Endpoint 'rci/' -PostBody '{"show":{"tags":{},"rc":{"user":{}}},"whoami":{}}' -Session $Session).show.rc.user
+        $Users=(Invoke-GenericKNRequest -Endpoint 'rci/' -PostBody '{"show":{"tags":{},"rc":{"user":{}}},"whoami":{}}' -Session $Session).show.rc.user
+        return $Users
+        <#
+        foreach ($member in Get-Member -InputObject $Users -MemberType NoteProperty) {
+            $Users.$member
+        }
+        #>
     }
     Process {
      }
