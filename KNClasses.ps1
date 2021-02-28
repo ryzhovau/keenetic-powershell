@@ -1,4 +1,8 @@
 <#
+This script is called from Keenetic.psm1 as `ScriptsToProcess = @('KNClasses.ps1')`
+That's the way to expose public class from module.
+
+KNSession class:
 - Stores session parameters,
 - Can validate session.
 #>
