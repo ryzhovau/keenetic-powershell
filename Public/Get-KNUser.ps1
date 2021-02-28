@@ -17,12 +17,12 @@
 function Get-KNUser {
     [CmdletBinding()]
     param(
-        # Existing connection session. Use default one if omitted
+        # Existing connection session. Default session used if parameter omitted.
         [Parameter(ValueFromPipeline=$true)]
         [KNSession]$Session=$Global:DefaultKNSession
     )
     Begin {
-        $Users=(Invoke-GenericKNRequest -Endpoint 'rci/' -PostBody '{"show":{"tags":{},"rc":{"user":{}}},"whoami":{}}' -Session $Session).show.rc.user
+        $Users=(Invoke-GenericKNRequest -Endpoint 'rci/' -Method Post -PostBody '{"show":{"tags":{},"rc":{"user":{}}},"whoami":{}}' -Session $Session).show.rc.user
         return $Users
         <#
         foreach ($member in Get-Member -InputObject $Users -MemberType NoteProperty) {
