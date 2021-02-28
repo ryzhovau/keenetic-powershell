@@ -12,7 +12,7 @@ function Invoke-GenericKNRequest {
         [Parameter(Mandatory=$true)]
         [string]$Endpoint,
         # Session object
-        [Parameter(Mandatory=$true)] 
+        [Parameter(Mandatory=$true)]
         [KNSession]$Session,
         # POST request body. GET request will be performed if omitted
         [string]$PostBody

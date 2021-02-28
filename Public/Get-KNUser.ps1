@@ -14,7 +14,7 @@
 .LINK
     https://github.com/ryzhovau/keenetic-powershell
 #>
-function Get-KNUsers {
+function Get-KNUser {
     [CmdletBinding()]
     param(
         # Existing connection session. Use default one if omitted

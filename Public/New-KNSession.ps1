@@ -17,6 +17,7 @@
 #>
 function New-KNSession {
     [CmdletBinding()]
+    [OutputType([KNSession])]
     param(
         # URL to connect, like 'http://192.168.0.1' or 'https://my.keenetic.pro'. Presumes 'http://my.keenetic.net' if omitted.
         [System.Uri]$Target='http://my.keenetic.net',
@@ -28,7 +29,7 @@ function New-KNSession {
     )
     Begin {
         function Get-Hash (
-        [string]$String, 
+        [string]$String,
         [string]$Algo)
         {
             $HashEngine=[System.Security.Cryptography.HashAlgorithm]::create($algo)
@@ -43,13 +44,14 @@ function New-KNSession {
         } catch  [System.Net.WebException] {
             $Response=$_.Exception.Response
             If ($Response.StatusCode -ne 'Unauthorized') {
-                throw [System.Net.WebException] "Unexpected status received.`n$($_.Exception)"  
+                throw [System.Net.WebException] "Unexpected status received.`n$($_.Exception)"
             }
             <# Challenge is to send POST request with following data
-            {  
+            {
                 login: login,
                 password: sha256(token + md5(login + ':' + realm + ':' + password))
-            } #>
+            }
+            #>
             $Token=$Response.Headers["X-NDM-Challenge"]
             $Realm=$Response.Headers["X-NDM-Realm"]
             Write-Verbose "X-NDM-Challenge header is $($Token)"
