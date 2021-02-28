@@ -22,7 +22,7 @@
 function New-KNSession {
     [CmdletBinding()]
     param(
-        [string]$Target='http://my.keenetic.net',
+        [System.Uri]$Target='http://my.keenetic.net',
         [pscredential]$Credential,
         [Switch]$AsDefaultSession
     )
@@ -39,7 +39,7 @@ function New-KNSession {
     Process {
         try {
             # First, we should catch X-NDM-Challenge/X-NDM-Realm headers from 401 response
-            Invoke-WebRequest -Uri "$Target/auth" -SessionVariable WebSession | Out-Null
+            Invoke-WebRequest -Uri "$($Target)auth" -SessionVariable WebSession | Out-Null
         } catch  [System.Net.WebException] {
             $Response=$_.Exception.Response
             If ($Response.StatusCode -ne 'Unauthorized') {
@@ -59,15 +59,16 @@ function New-KNSession {
             $PostBody=@{"login"=$Credential.GetNetworkCredential().UserName; "password"=$SHA256Hash} | ConvertTo-Json
             Write-Verbose "Challenge request body is:`n$($PostBody)"
             try {
-                Invoke-WebRequest -Uri "$Target/auth" -WebSession $WebSession -Method Post -Body $PostBody -ContentType 'application/json' | Out-Null
+                Invoke-WebRequest -Uri "$($Target)auth" -WebSession $WebSession -Method Post -Body $PostBody -ContentType 'application/json' | Out-Null
             } catch {
                 throw [System.Net.WebException] "Logon failed.`n$($_.Exception)"
             }
-            return [PSCustomObject]@{ 
+            $KNSession=[KNSession]@{
                 Target=$Target
                 Credential=$Credential
                 WebSession=$WebSession
             }
+            return $KNSession
         }
     }
     End {
