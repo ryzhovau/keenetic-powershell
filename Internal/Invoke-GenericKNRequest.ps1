@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    POST/GET requests to Keenetic REST API.
+    POST/GET/DELETE requests to Keenetic REST API.
 .DESCRIPTION
     This is a prototype for any other requests exposed from module
 .LINK
@@ -14,7 +14,11 @@ function Invoke-GenericKNRequest {
         # Session object
         [Parameter(Mandatory=$true)]
         [KNSession]$Session,
-        # POST request body. GET request will be performed if omitted
+        # Request method. Post/Get/Delete methods allowed
+        [ValidateSet('Post','Get','Delete')]
+        [Parameter(Mandatory=$true)]
+        [string]$Method,
+        # POST request body.
         [string]$PostBody
     )
     Begin {
@@ -25,10 +29,9 @@ function Invoke-GenericKNRequest {
         }
         Write-Verbose "Performing REST API request to $($Session.Target)$($Endpoint)"
         if ($null -eq $PostBody) {
-            Write-Verbose "POST body is $PostBody"
-            Invoke-RestMethod -Uri "$($Session.Target)$($Endpoint)" -Method Get -WebSession $Session.WebSession -ContentType 'application/json'
+            Invoke-RestMethod -Uri "$($Session.Target)$($Endpoint)" -Method $Method -WebSession $Session.WebSession -ContentType 'application/json'
         } else {
-            Invoke-RestMethod -Uri "$($Session.Target)$($Endpoint)" -Method Post -Body $PostBody -WebSession $Session.WebSession -ContentType 'application/json'
+            Invoke-RestMethod -Uri "$($Session.Target)$($Endpoint)" -Method $Method -Body $PostBody -WebSession $Session.WebSession -ContentType 'application/json'
         }
     }
     End {
