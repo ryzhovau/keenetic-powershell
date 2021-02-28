@@ -68,7 +68,11 @@ function New-KNSession {
                 Credential=$Credential
                 WebSession=$WebSession
             }
-            return $KNSession
+            if ($AsDefaultSession) {
+                $Global:DefaultKNSession=$KNSession
+            } else {
+                return $KNSession
+            }
         }
     }
     End {
