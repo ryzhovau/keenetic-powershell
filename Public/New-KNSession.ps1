@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Authentificate on Keenetic device and save session parameters.
+    Authentificate on Keenetic device and save session parameters
 .DESCRIPTION
     Process auth challenge on given device and output result for use in future.
     Please note about session expiration after few minutes of inactivity.
@@ -20,9 +20,9 @@ function New-KNSession {
     [OutputType([KNSession])]
     param(
         # URL to connect, like 'http://192.168.0.1' or 'https://my.keenetic.pro'. Presumes 'http://my.keenetic.net' if omitted.
-        [System.Uri]$Target='http://my.keenetic.net',
+        [System.Uri]$Target = 'http://my.keenetic.net',
         # User name and password for target device
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [pscredential]$Credential,
         # Store session parameters to $DefaultKNSession instead of returning object
         [Switch]$AsDefaultSession
@@ -32,8 +32,8 @@ function New-KNSession {
         [string]$String,
         [string]$Algo)
         {
-            $HashEngine=[System.Security.Cryptography.HashAlgorithm]::create($algo)
-            $UTF8=New-Object -TypeName System.Text.UTF8Encoding
+            $HashEngine = [System.Security.Cryptography.HashAlgorithm]::create($algo)
+            $UTF8 = New-Object -TypeName System.Text.UTF8Encoding
             [System.BitConverter]::ToString($HashEngine.ComputeHash($utf8.GetBytes($String))).ToLower().Replace('-', '')
         }
     }
@@ -42,7 +42,7 @@ function New-KNSession {
             # First, we should catch X-NDM-Challenge/X-NDM-Realm headers from 401 response
             Invoke-WebRequest -Uri "$($Target)auth" -SessionVariable WebSession | Out-Null
         } catch  [System.Net.WebException] {
-            $Response=$_.Exception.Response
+            $Response = $_.Exception.Response
             If ($Response.StatusCode -ne 'Unauthorized') {
                 throw [System.Net.WebException] "Unexpected status received.`n$($_.Exception)"
             }
@@ -56,22 +56,22 @@ function New-KNSession {
             $Realm=$Response.Headers["X-NDM-Realm"]
             Write-Verbose "X-NDM-Challenge header is $($Token)"
             Write-Verbose "X-NDM-Realm header is $($Realm)"
-            $MD5Hash=Get-Hash "$($Credential.GetNetworkCredential().UserName):$($Realm):$($Credential.GetNetworkCredential().Password)" 'MD5'
-            $SHA256Hash=Get-Hash "$($Token)$($MD5Hash)" 'SHA256'
-            $PostBody=@{"login"=$Credential.GetNetworkCredential().UserName; "password"=$SHA256Hash} | ConvertTo-Json
+            $MD5Hash = Get-Hash "$($Credential.GetNetworkCredential().UserName):$($Realm):$($Credential.GetNetworkCredential().Password)" 'MD5'
+            $SHA256Hash = Get-Hash "$($Token)$($MD5Hash)" 'SHA256'
+            $PostBody = @{"login"=$Credential.GetNetworkCredential().UserName; "password"=$SHA256Hash} | ConvertTo-Json
             Write-Verbose "Challenge request body is:`n$($PostBody)"
             try {
                 Invoke-WebRequest -Uri "$($Target)auth" -WebSession $WebSession -Method Post -Body $PostBody -ContentType 'application/json' | Out-Null
             } catch {
                 throw [System.Net.WebException] "Logon failed.`n$($_.Exception)"
             }
-            $KNSession=[KNSession]@{
-                Target=$Target
-                Credential=$Credential
-                WebSession=$WebSession
+            $KNSession = [KNSession]@{
+                Target = $Target
+                Credential = $Credential
+                WebSession = $WebSession
             }
             if ($AsDefaultSession) {
-                $Global:DefaultKNSession=$KNSession
+                $Global:DefaultKNSession = $KNSession
             } else {
                 return $KNSession
             }

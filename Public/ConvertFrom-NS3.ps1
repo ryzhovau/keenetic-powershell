@@ -17,7 +17,7 @@ function ConvertFrom-NS3 {
     [CmdletBinding()]
     param(
         # NS3 string from Keenetic config
-        [Parameter(ValueFromPipeline=$true,Position=1,Mandatory=$true)]
+        [Parameter(ValueFromPipeline = $true,Position = 1,Mandatory = $true)]
         [String]$NS3String
     )
     Begin {
@@ -27,7 +27,7 @@ function ConvertFrom-NS3 {
             $NS3String += '='
         }
         $Password = [System.Collections.Generic.List[byte]][System.Convert]::FromBase64String($NS3String)
-        $Length=$Password.Count
+        $Length = $Password.Count
         if ($Length -notin 0x12, 0x24, 0x48) {
             throw 'Invalid NS3 string length.'
         }

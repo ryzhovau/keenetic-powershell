@@ -19,12 +19,12 @@ function Export-KNFile {
     param(
         # Keenetic file, like 'default-config.txt' or 'firmware'
         [ValidateSet('default-config.txt','startup-config.txt','running-config.txt','self-test.txt','firmware','log.txt')]
-        [Parameter(Position=1,Mandatory=$true)]
+        [Parameter(Position = 1,Mandatory = $true)]
         [string]$File,
         # Existing connection session. Default session used if parameter omitted.
-        [KNSession]$Session=$Global:DefaultKNSession,
+        [KNSession]$Session = $Global:DefaultKNSession,
         # Specifies the output file to save instead of returning it to pipe. 
-        [string]$OutFile=$File
+        [string]$OutFile = $File
     )
     Begin {
     }

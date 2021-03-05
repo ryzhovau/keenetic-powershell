@@ -1,22 +1,22 @@
 <#
 .SYNOPSIS
-    POST/GET/DELETE requests to Keenetic REST API.
+    POST/GET/DELETE requests to Keenetic REST API
 .DESCRIPTION
-    This is a prototype for any other requests exposed from module
+    This is a prototype for any other requests exposed from module.
 .LINK
     https://github.com/ryzhovau/keenetic-powershell
 #>
 function Invoke-GenericKNRequest {
     param(
          # API endpoint, i.e. 'rci/show/version'
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Endpoint,
         # Session object
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [KNSession]$Session,
         # Request method. Post/Get/Delete methods allowed
         [ValidateSet('Post','Get','Delete')]
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Method,
         # POST request body.
         [string]$PostBody
