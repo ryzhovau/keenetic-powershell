@@ -9,8 +9,6 @@
 .EXAMPLE
     PS C:\> Remove-KNSession
     Log out from device and remove default session. Command-let will raise an exception if default session is not defined.
-.NOTES
-    General notes
 .LINK
     https://github.com/ryzhovau/keenetic-powershell
 #>

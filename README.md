@@ -10,6 +10,7 @@ Import-Module "path\to\Keenetic.psd1"
 ```
 # Connect to default device via http://my.keenetic.net
 Start-KNSession -Credential (Get-Credentials) -AsDefaultSession
+
 # Run 'show version' CLI command via REST Core Interface (rci):
 Invoke-KNRequest show/version
 

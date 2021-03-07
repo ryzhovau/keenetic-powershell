@@ -10,8 +10,6 @@
 .EXAMPLE
     PS C:\>$Session = New-KNSession -Credential (Get-Credential)
     Log onto Keenetic Router on default address 'http://my.keenetic.net' and return session parameters as an object.
-.NOTES
-    General notes
 .LINK
     https://github.com/ryzhovau/keenetic-powershell
 #>

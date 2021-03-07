@@ -6,11 +6,7 @@
 .EXAMPLE
     PS C:\> ConvertFrom-NS3 -NS3String 'ClkGVb4VylHfkHQBQAg2jSUN'
     1357924680
-    
-.NOTES
-    General notes
 .LINK
-    https://github.com/ryzhovau/keenetic-powershell
     https://antichat.com/threads/426200/#post-4008965
 #>
 function ConvertFrom-NS3 {

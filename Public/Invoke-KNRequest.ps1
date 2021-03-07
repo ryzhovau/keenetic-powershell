@@ -3,10 +3,14 @@
     POST/GET/DELETE requests to Keenetic REST API
 .DESCRIPTION
     This is a prototype for any other requests exposed from module.
+.EXAMPLE
+    PS C:\> Invoke-KNRequest show/version
+    Return a JSON response for 'show version' CLI command.
+.EXAMPLE
+    PS C:\> Invoke-KNRequest 'firmware' -Ci -OutFile fw_backup.bin -Raw
+    Download firmware via deprecated XML Core Interface (ci).
 .LINK
-    https://github.com/ryzhovau/keenetic-powershell
-    http://docs.help.keenetic.com/cli/3.1/en/cli_manual_kn-1010.pdf (B.1 REST Core Interface)
-
+    http://docs.help.keenetic.com/cli/3.1/en/cli_manual_kn-1010.pdf
 #>
 function Invoke-KNRequest {
     param(
