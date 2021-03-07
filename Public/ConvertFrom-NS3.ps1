@@ -21,7 +21,7 @@ function ConvertFrom-NS3 {
         [String]$NS3String
     )
     Begin {
-     }
+    }
     Process {
         While (-not (0 -eq $NS3String.Length % 4)) {
             $NS3String += '='

@@ -2,7 +2,7 @@
 .SYNOPSIS
     Authentificate on Keenetic device and save session parameters
 .DESCRIPTION
-    Process auth challenge on given device and output result for use in future.
+    Pass through auth challenge on given device and output result for future use.
     Please note about session expiration after few minutes of inactivity.
 .EXAMPLE
     PS C:\> Get-Credential | New-KNSession -Target https://my.keenetic.com -AsDefaultSession
@@ -19,9 +19,9 @@ function New-KNSession {
     [CmdletBinding()]
     [OutputType([KNSession])]
     param(
-        # URL to connect, like 'http://192.168.0.1' or 'https://my.keenetic.pro'. Presumes 'http://my.keenetic.net' if omitted.
+        # URL to connect, like 'http://192.168.0.1' or 'https://my.keenetic.pro'. Presumes 'http://my.keenetic.net' by default.
         [System.Uri]$Target = 'http://my.keenetic.net',
-        # User name and password for target device
+        # User name and password for target device. User must have 'http' tag to interact with core interface.
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [pscredential]$Credential,
         # Store session parameters to $DefaultKNSession instead of returning object
@@ -52,8 +52,8 @@ function New-KNSession {
                 password: sha256(token + md5(login + ':' + realm + ':' + password))
             }
             #>
-            $Token=$Response.Headers["X-NDM-Challenge"]
-            $Realm=$Response.Headers["X-NDM-Realm"]
+            $Token = $Response.Headers["X-NDM-Challenge"]
+            $Realm = $Response.Headers["X-NDM-Realm"]
             Write-Verbose "X-NDM-Challenge header is $($Token)"
             Write-Verbose "X-NDM-Realm header is $($Realm)"
             $MD5Hash = Get-Hash "$($Credential.GetNetworkCredential().UserName):$($Realm):$($Credential.GetNetworkCredential().Password)" 'MD5'

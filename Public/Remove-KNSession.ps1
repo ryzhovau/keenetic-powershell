@@ -22,7 +22,7 @@ function Remove-KNSession {
         [KNSession]$Session = $Global:DefaultKNSession
     )
     Begin {
-        Invoke-GenericKNRequest -Endpoint 'auth' -Method Delete -Session $Session | Out-Null
+        Invoke-WebRequest -Uri "$($Session.Target)auth" -WebSession $Session.WebSession -Method Delete -ContentType 'application/json' | Out-Null
         if ($session.Equals($Global:DefaultKNSession)) {
             Remove-Variable DefaultKNSession -Scope Global
         }
