@@ -7,7 +7,7 @@ Import-Module "path\to\Keenetic.psd1"
 ```
 
 # Usage
-```
+```PowerShell
 # Connect to default device via http://my.keenetic.net
 Start-KNSession -Credential (Get-Credentials) -AsDefaultSession
 
@@ -32,7 +32,7 @@ description  : mykeenetic
 Invoke-KNRequest 'firmware' -Ci -OutFile fw_backup.bin -Raw
 
 # Decode PPP/WPA password from NS3 (NDM Secure v3) string:
-ClkGVb4VylHfkHQBQAg2jSUN
+ConvertFrom-NS3 'ClkGVb4VylHfkHQBQAg2jSUN'
 1357924680
 ```
 See [Wiki](https://github.com/ryzhovau/keenetic-powershell/wiki) for available cmdlets with detailed description.
