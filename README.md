@@ -7,7 +7,7 @@ Import-Module "path\to\Keenetic.psd1"
 ```
 
 # Usage
-```
+```PowerShell
 # Connect to default device via http://my.keenetic.net
 Start-KNSession -Credential (Get-Credentials) -AsDefaultSession
 
