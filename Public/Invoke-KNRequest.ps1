@@ -4,11 +4,11 @@
 .DESCRIPTION
     This is a prototype for any other requests exposed from module.
 .EXAMPLE
-    PS C:\> Invoke-KNRequest show/version
-    Return a JSON response for 'show version' CLI command.
+    PS C:\> Invoke-KNRequest show/version -Session $Session
+    Return a JSON response from 'show version' CLI command in active $session. 
 .EXAMPLE
     PS C:\> Invoke-KNRequest 'firmware' -Ci -OutFile fw_backup.bin -Raw
-    Download firmware via deprecated XML Core Interface (ci).
+    Download firmware via deprecated XML Core Interface (ci). Function will raise an exception if default session is not defined.
 .LINK
     http://docs.help.keenetic.com/cli/3.1/en/cli_manual_kn-1010.pdf
 #>

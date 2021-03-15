@@ -2,7 +2,7 @@
 .SYNOPSIS
     Decode NS3 password string
 .DESCRIPTION
-    Retrive plain text password from NDM Secure v3 (NS3) string. Get PPP/WPA password from config and pass it to this cmdlet.
+    Retrive plain text password from NDM Secure v3 (NS3) string. Get PPP/WPA password from config and pass it to this function.
 .EXAMPLE
     PS C:\> ConvertFrom-NS3 -NS3String 'ClkGVb4VylHfkHQBQAg2jSUN'
     1357924680
