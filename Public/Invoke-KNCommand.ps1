@@ -4,7 +4,7 @@
 .DESCRIPTION
     CLI emulator with autocomplete support
 .EXAMPLE
-    PS C:\> Invoke-KNCommand show version
+    PS C:\> Invoke-KNCommand 'show version'
     Return 'show version' result as appropriate CLI command do
 .LINK
     https://github.com/ryzhovau/keenetic-powershell
@@ -32,7 +32,11 @@ function Invoke-KNCommand {
                 $WordToComplete = $WordToComplete.Split("'")[1]
             }
             $Body = '{{"help": "{0}"}}' -f $WordToComplete
-            $Response = Invoke-KNRequest -Body $Body -Session $Script:Session
+            if ($fakeBoundParameters.ContainsKey('Session')) {
+                $Response = Invoke-KNRequest -Body $Body -Session $fakeBoundParameters.Session
+            } else {
+                $Response = Invoke-KNRequest -Body $Body
+            }
             # .completion tells the only option left to complete command and/or option(s)
             if ($Response.help.completion) {
                 "'" + $WordToComplete + $Response.help.completion + "'"
@@ -65,9 +69,9 @@ function Invoke-KNCommand {
         }
     }
     Process {
-        (Invoke-KNRequest -Body $Body -Session $Session)
-        #.parse
-        #(Invoke-KNRequest -Body '{"parse":"show running"}'-Session $Session).parse
+        $Body = '{{"parse": "{0}"}}' -f $Command
+        $Body > debug.txt
+        Invoke-KNRequest -Body $Body -Session $Session
     }
     End {
     }
