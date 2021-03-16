@@ -11,7 +11,7 @@
 #>
 function ConvertFrom-NS3 {
     [CmdletBinding()]
-    param(
+    param (
         # NS3 string from Keenetic config
         [Parameter(ValueFromPipeline = $true,Position = 1,Mandatory = $true)]
         [String]$NS3String

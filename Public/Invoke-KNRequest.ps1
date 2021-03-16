@@ -13,17 +13,18 @@
     http://docs.help.keenetic.com/cli/3.1/en/cli_manual_kn-1010.pdf
 #>
 function Invoke-KNRequest {
-    param(
+    param (
         # Use deprecated 'ci' XML Core Interface. Otherwise, REST Core Interface 'rci' wil be used (by default).
         [switch]$Ci,
         # Request method. Post/Get/Delete methods allowed. 'Get' by default.
         [ValidateSet('Post','Get','Delete')]
         [string]$Method = 'Get',
-        # POST request body. Optional for 'rci', mandatory for 'ci'.
-        [string]$PostBody,   
         # URL, i.e. 'show/version'
         [Parameter(Position = 1)]
         [string]$URL,
+        # POST request body. Optional for 'rci', mandatory for 'ci'.
+        [Parameter(Position = 2)]
+        [string]$Body,
         # Specifies the output file to save instead of returning it to pipe. 
         [string]$OutFile,
         # Don't try to interpret Keentic response as JSON/XML. 
@@ -48,7 +49,7 @@ function Invoke-KNRequest {
             $ContentType = 'application/json'
         }
         $Uri = '{0}{1}/{2}' -f $Session.Target,$CoreInterface,$URL
-        if ($PostBody -ne '') {
+        if ($Body) {
             $Method = 'Post'
         }
         $RequestParams = @{
@@ -58,9 +59,9 @@ function Invoke-KNRequest {
             ContentType = $ContentType
         }       
         if ($Method -eq 'Post') {
-            $RequestParams['Body'] = $PostBody
+            $RequestParams['Body'] = $Body
         }
-        if ($OutFile -ne '') {
+        if ($OutFile) {
             $RequestParams['OutFile'] = $OutFile
         }
         if ($Headers.Count -ne 0) {
