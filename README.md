@@ -1,6 +1,9 @@
 # Keenetic PowerShell Module
 This module allows to operate with [Keenetic routers](https://keenetic.com) from command line. You can get or set WAN connections, LAN segments, Users, Services and other configurable options.
 
+
+[![asciicast](https://asciinema.org/a/sprhYWFUQ8tVB8Vpfh2Ll4IjW.svg)](https://asciinema.org/a/sprhYWFUQ8tVB8Vpfh2Ll4IjW)
+
 # Installation
 ```
 Import-Module "path\to\Keenetic.psd1"
