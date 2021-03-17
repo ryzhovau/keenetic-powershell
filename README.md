@@ -34,12 +34,21 @@ description  : mykeenetic
 # Download firmware, using deprecated XML Core Interface (ci):
 Invoke-KNRequest 'firmware' -Ci -OutFile fw_backup.bin -Raw
 
-# Decode PPP/WPA password from NS3 (NDM Secure v3) string:
-ConvertFrom-NS3 'ClkGVb4VylHfkHQBQAg2jSUN'
-1357924680
+# Pure CLI commands with autocompletion:
+Invoke-KNCommand 'interface FastEthernet0/0 down' | ConvertTo-Json
+{
+    "parse":  {
+                  "prompt":  "(config)",
+                  "status":  [
+                                 "@{status=message; code=72155142; ident=Network::Interface::Base; source=; warning=no;
+ message=\"FastEthernet0/0\": interface is down.}"
+                             ]
+              }
+}
 ```
 See [Wiki](https://github.com/ryzhovau/keenetic-powershell/wiki) for available cmdlets with detailed description.
 
 # Acknowledgment
 Thanks to Sergey Mazepin and Rostislav Bronzov aka @Rostis1av for PowerShell course.
+
 Thanks to Adam Driscoll aka @adamdriscoll for brilliant module skeleton from [selenium-powershell](https://github.com/adamdriscoll/selenium-powershell).
