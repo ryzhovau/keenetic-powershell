@@ -70,7 +70,6 @@ function Invoke-KNCommand {
     }
     Process {
         $Body = '{{"parse": "{0}"}}' -f $Command
-        $Body > debug.txt
         Invoke-KNRequest -Body $Body -Session $Session
     }
     End {
