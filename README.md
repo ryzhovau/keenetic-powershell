@@ -6,7 +6,7 @@ This module allows to operate with [Keenetic routers](https://keenetic.com) from
 
 # Installation
 ```
-Import-Module "path\to\Keenetic.psd1"
+Install-Module Keenetic
 ```
 
 # Usage
@@ -40,8 +40,8 @@ Invoke-KNCommand 'interface FastEthernet0/0 down' | ConvertTo-Json
     "parse":  {
                   "prompt":  "(config)",
                   "status":  [
-                                 "@{status=message; code=72155142; ident=Network::Interface::Base; source=; warning=no;
- message=\"FastEthernet0/0\": interface is down.}"
+                                 "@{status=message; code=72155142; ident=Network::Interface::Base; 
+source=; warning=no; message=\"FastEthernet0/0\": interface is down.}"
                              ]
               }
 }
