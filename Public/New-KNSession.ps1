@@ -37,8 +37,17 @@ function New-KNSession {
     }
     Process {
         try {
-            # First, we should catch X-NDM-Challenge/X-NDM-Realm headers from 401 response
+            # We should catch X-NDM-Challenge/X-NDM-Realm headers from 401 response
             Invoke-WebRequest -Uri "$($Target)auth" -SessionVariable WebSession | Out-Null
+            # 200 response means no any password set. We presume it's a Keenetic without any additional checks because:
+            # - it can't be a cloud and/or remote Keenetic device
+            # - if it's lan device, user should check it's a Keenetic 
+            Write-Warning 'No password set on device.'
+            $KNSession = [KNSession]@{
+                Target = $Target
+                Credential = $null
+                WebSession = $WebSession
+            }
         } catch  [System.Net.WebException] {
             $Response = $_.Exception.Response
             If ($Response.StatusCode -ne 'Unauthorized') {
@@ -52,6 +61,9 @@ function New-KNSession {
             #>
             $Token = $Response.Headers["X-NDM-Challenge"]
             $Realm = $Response.Headers["X-NDM-Realm"]
+            if (($null -eq $Token) -or $null -eq $Realm) {
+                throw [System.Net.WebException] "No X-NDM-* headers present. This device doesn't look like Keenetic router."
+            }
             Write-Verbose "X-NDM-Challenge header is $($Token)"
             Write-Verbose "X-NDM-Realm header is $($Realm)"
             $MD5Hash = Get-Hash "$($Credential.GetNetworkCredential().UserName):$($Realm):$($Credential.GetNetworkCredential().Password)" 'MD5'
@@ -68,11 +80,11 @@ function New-KNSession {
                 Credential = $Credential
                 WebSession = $WebSession
             }
-            if ($AsDefaultSession) {
-                $Global:DefaultKNSession = $KNSession
-            } else {
-                return $KNSession
-            }
+        }
+        if ($AsDefaultSession) {
+            $Global:DefaultKNSession = $KNSession
+        } else {
+            return $KNSession
         }
     }
     End {
